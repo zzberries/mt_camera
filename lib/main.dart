@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:mt_camera/home_page.dart';
+import 'camera_controls.dart';
 
-var empatheticLightYellow = const Color(0xffffcd5c);
-var empatheticLightGreen = const Color(0xff96ceb5);
+// empathetic engineering colors
+const empatheticLightYellow = Color(0xffffcd5c);
+const empatheticLightGreen = Color(0xff96ceb5);
 
-var cambridgeBlue = const Color(0xff7ca982);
-var nyanza = const Color(0xffe0eec6);
-var mintCream = const Color(0xfff1f7ed);
-var darkSlateGray = const Color(0xff243e36);
-var oldGold = const Color(0xffc2a83e);
+// rest of the app colors
+const cambridgeBlue = Color(0xff7ca982);
+const nyanza = Color(0xffe0eec6);
+const mintCream = Color(0xfff1f7ed);
+const darkSlateGray = Color(0xff243e36);
+const oldGold = Color(0xffc2a83e);
 
-void main() => runApp(const MountCameraApp());
+// run the actual app
+void main() => runApp(const MainApp());
 
-class MountCameraApp extends StatelessWidget {
-  const MountCameraApp({super.key});
+// creating the main app that contains all other widgets inside
+// TODO: create a starting screen that the user can press instead of loading the main app immediately
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
   static const String _title = 'Mt. Camera - Robot Controller App!';
 
+  // build the app with a stateful widget because we have a bottom navbar
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -25,6 +33,7 @@ class MountCameraApp extends StatelessWidget {
   }
 }
 
+// the stateful widget for the whole app because it changes based on navbar icon pressed
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({super.key});
 
@@ -32,118 +41,43 @@ class MyStatefulWidget extends StatefulWidget {
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
-class CameraControlsPage extends StatelessWidget {
-  const CameraControlsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-              height: MediaQuery.of(context).size.height * 0.5,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: AssetImage('images/sidewalk_photo.jpg'),
-                )
-              ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                color: const Color(0xffc2a83e),
-                child: const Text(
-                  'Photo',
-                  style: TextStyle(
-                    color: Color(0xff243e36),
-                  ),
-                )
-              ),
-              Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Video',
-                    style: TextStyle(
-                      color: Color(0xff243e36),
-                    ),
-                  )
-              )
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: const Icon(Icons.circle_outlined, size: 45, color: Color(0xff243e36),),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            color: const Color(0xffe0eec6),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Text('CANON-18'),
-                    Icon(Icons.wifi),
-                  ],
-                )
-              ],
-            )
-          )
-        ],
-      )
-    );
-  }
-}
-
+// the states that the stateful widget contains
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-    color: Color(0xff243e36),
-  );
+  int _selectedIndex = 0; // the first selected state - TODO: CHANGE TO 1 TO START FROM HOME PAGE
+
+  // the different pages based on the icons in the navbar
   static const List<Widget> _widgetOptions = <Widget>[
-    CameraControlsPage(),
-    Text(
-      'Index 1: Home',
-      style: optionStyle,
-    ),
+    CameraControlsPage(), // the camera controls page
+    HomeScreen(),
     Text(
       'Index 2: Robot Controls',
-      style: optionStyle,
     ),
   ];
 
-  void _onItemTapped(int index) {
+  // what happens when you select a given navbar
+  void _onNavbarIconTapped(int index) {
+    // set this index to whatever the index of the navbar icon is
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  // build this stateful widget which will contain all other pages
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff1f7ed),
+      backgroundColor: mintCream,
+      // the top bar that says app name
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 80, // fixed height: TODO: change the height to be dynamic
         title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset(
-                'images/unnamed.png',
-                scale: 7.5,
-              ),
-              const SizedBox(
-                width: 70,
-              ),
+              Image.asset('assets/images/unnamed.png', scale: 8),
               const Text(
                 'Mt. Camera',
                 style: TextStyle(
-                    color: Color(0xff243e36),
+                    color: darkSlateGray,
                     fontSize: 30
                 ),
               )
@@ -152,7 +86,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-                colors: <Color>[Color(0xffe0eec6), Color(0xff7ca982)]),
+                colors: <Color>[nyanza, cambridgeBlue]),
           ),
         ),
       ),
@@ -161,9 +95,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xffe0eec6),
-        unselectedItemColor: const Color(0xff243e36),
-        backgroundColor: const Color(0xff7ca982),
+        selectedItemColor: nyanza,
+        unselectedItemColor: darkSlateGray,
+        backgroundColor: cambridgeBlue,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.camera),
@@ -179,7 +113,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ],
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: _onNavbarIconTapped,
       ),
     );
   }
