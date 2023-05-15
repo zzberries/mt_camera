@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mt_camera/bluetooth_module_controls.dart';
 import 'package:mt_camera/home_page.dart';
 import 'camera_controls.dart';
-
-// empathetic engineering colors
-const empatheticLightYellow = Color(0xffffcd5c);
-const empatheticLightGreen = Color(0xff96ceb5);
-
-// rest of the app colors
-const cambridgeBlue = Color(0xff7ca982);
-const nyanza = Color(0xffe0eec6);
-const mintCream = Color(0xfff1f7ed);
-const darkSlateGray = Color(0xff243e36);
-const oldGold = Color(0xffc2a83e);
+import 'package:mt_camera/color_constants.dart';
 
 // run the actual app
 void main() => runApp(const MainApp());
@@ -21,7 +12,7 @@ void main() => runApp(const MainApp());
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  static const String _title = 'Mt. Camera - Robot Controller App!';
+  static const String _title = 'Mt. Camera - Camera Mount Controller App!';
 
   // build the app with a stateful widget because we have a bottom navbar
   @override
@@ -46,9 +37,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0; // the first selected state - TODO: CHANGE TO 1 TO START FROM HOME PAGE
 
   // the different pages based on the icons in the navbar
-  static const List<Widget> _widgetOptions = <Widget>[
-    CameraControlsPage(), // the camera controls page
+  static const List<Widget> _widgetOptions = <Widget>[ // the camera controls page
     HomeScreen(),
+    BluetoothScreen(),
     Text(
       'Index 2: Robot Controls',
     ),
@@ -101,15 +92,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.camera),
-            label: 'Camera Controls',
+            label: 'Camera',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Bluetooth',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.open_with),
-            label: 'Robot Controls',
+            label: 'Mount',
           ),
         ],
         currentIndex: _selectedIndex,
