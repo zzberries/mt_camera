@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mt_camera/bluetooth_module_controls.dart';
 import 'package:mt_camera/home_page.dart';
 import 'camera_controls.dart';
@@ -17,7 +18,10 @@ class MainApp extends StatelessWidget {
   // build the app with a stateful widget because we have a bottom navbar
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+        fontFamily: GoogleFonts.poppins().fontFamily,
+      ),
       title: _title,
       home: MyStatefulWidget(),
     );
@@ -69,7 +73,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 'Mt. Camera',
                 style: TextStyle(
                     color: darkSlateGray,
-                    fontSize: 30
+                    fontSize: 25
                 ),
               )
             ]

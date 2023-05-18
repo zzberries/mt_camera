@@ -38,6 +38,7 @@ dependencies:
   flutter_blue_plus: ^1.4.0
   permission_handler: ^10.2.0
   external_app_launcher: ^3.1.0
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,9 @@ flutter:
   assets:
     - assets/images/unnamed.png
     - assets/images/sidewalk_photo.jpg
+    - assets/images/gopro_image.png
+    - assets/images/akaso_image.png
+    - assets/images/canon_image.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

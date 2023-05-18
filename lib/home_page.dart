@@ -10,128 +10,132 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<CameraAppIcon> _apps = [];
+
   @override
   void initState() {
     super.initState();
+    _apps.add(CameraAppIcon(appName: 'GoPro', androidPackage: 'com.gopro.smarty', imageUrl: 'assets/images/gopro_image.png'));
+    _apps.add(CameraAppIcon(appName: 'AKASO', androidPackage: 'com.cnest.motioncamera', imageUrl: 'assets/images/akaso_image.png'));
+    _apps.add(CameraAppIcon(appName: 'Canon', androidPackage: 'jp.co.canon.ic.cameraconnect', imageUrl: 'assets/images/canon_image.png'));
+  }
+
+  Column _buildCameraAppIcons() {
+    List<Widget> containers = [];
+    for (CameraAppIcon cai in _apps) {
+      containers.add(
+        Container(
+          margin: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: darkSlateGray,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            color: nyanza
+          ),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(
+                  cai.imageUrl,
+                  height: 80.0,
+                  fit: BoxFit.fitHeight,
+                ),
+                Column(
+                  children: [
+                    Text(
+                        cai.appName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: darkSlateGray,
+                          fontSize: 20,
+                        )
+                    ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await LaunchApp.openApp(
+                            androidPackageName: cai.androidPackage,
+                            openStore: false,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: const StadiumBorder(),
+                          backgroundColor: cambridgeBlue,
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.bold
+                          ),
+                          elevation: 3,
+                        ),
+                        child: const Center(
+                            child: Text(
+                              'OPEN APP',
+                              textAlign: TextAlign.center,
+                            )
+                        )
+                    ),
+                  ],
+                )
+              ]
+          )
+        )
+      );
+    }
+    return Column(children: <Widget>[...containers]);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            child: const Text(
-              'GoPro Quik App',
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(10),
+          child: const Text(
+              'What type of camera will you be using?',
               textAlign: TextAlign.center,
               style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold,
                 color: darkSlateGray,
-                fontSize: 20,
+              )
+          ),
+        ),
+        _buildCameraAppIcons(),
+        Container(
+          margin: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: const [
+              Text(
+                  'Are you using a camera our app doesn\'t support?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: darkSlateGray,
+                  )
               ),
-            ),
-          ),
-          SizedBox(
-            width: 120,
-            height: 40,
-            child: ElevatedButton(
-                onPressed: () async {
-                  await LaunchApp.openApp(
-                    androidPackageName: 'com.gopro.smarty',
-                    openStore: false,
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: cambridgeBlue,
-                  textStyle: const TextStyle(
-                      fontWeight: FontWeight.bold
-                  ),
-                  elevation: 3,
-                ),
-                child: const Center(
-                    child: Text(
-                      'OPEN APP',
-                      textAlign: TextAlign.center,
-                    )
-                ))
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            child: const Text(
-              'AKASO GO App',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: darkSlateGray,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          SizedBox(
-              width: 120,
-              height: 40,
-              child: ElevatedButton(
-                  onPressed: () async {
-                    await LaunchApp.openApp(
-                      androidPackageName: 'com.cnest.motioncamera',
-                      openStore: false,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: cambridgeBlue,
-                    textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold
-                    ),
-                    elevation: 3,
-                  ),
-                  child: const Center(
-                      child: Text(
-                        'OPEN APP',
-                        textAlign: TextAlign.center,
-                      )
-                  ))
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            child: const Text(
-              'Canon Camera Connect App',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: darkSlateGray,
-                fontSize: 20,
-              ),
-            ),
-          ),
-          SizedBox(
-              width: 120,
-              height: 40,
-              child: ElevatedButton(
-                  onPressed: () async {
-                    await LaunchApp.openApp(
-                      androidPackageName: 'jp.co.canon.ic.cameraconnect',
-                      openStore: false,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: cambridgeBlue,
-                    textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold
-                    ),
-                    elevation: 3,
-                  ),
-                  child: const Center(
-                      child: Text(
-                        'OPEN APP',
-                        textAlign: TextAlign.center,
-                      )
-                  ))
-          ),
-        ],
-      ),
+              Text(
+                  'Contact us.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: cambridgeBlue,
+                  )
+              )
+            ],
+          )
+        )
+      ],
     );
   }
 }
+
+class CameraAppIcon {
+  final String appName;
+  final String androidPackage;
+  final String imageUrl;
+
+  CameraAppIcon({required this.appName, required this.androidPackage, required this.imageUrl});
+}
+

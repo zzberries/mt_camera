@@ -17,20 +17,19 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
   List<BluetoothService>? bluetoothServices;
   List<ControlButton> controlButtons = [];
   late String _buttonState;
-  late int _deviceState;
 
   @override
   void initState() {
     initBleList();
     super.initState();
-    _deviceState = 0;
     _buttonState = "no button pressed.";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: bluetoothServices == null ? _buildListViewOfDevices() : _buildControlButtons()
+        backgroundColor: mintCream,
+        body: bluetoothServices == null ? _buildListViewOfDevices() : _buildControlButtons()
     );
   }
 
