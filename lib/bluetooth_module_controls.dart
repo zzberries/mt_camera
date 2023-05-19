@@ -16,6 +16,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
   List<BluetoothDevice> _devicesList = [];
   List<BluetoothService>? bluetoothServices;
   List<ControlButton> controlButtons = [];
+  BluetoothDevice? arduinoDevice;
 
   @override
   void initState() {
@@ -142,31 +143,63 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                     device.name,
                     style: const TextStyle(
                       color: darkSlateGray,
-                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
                     )
                   ),
                   Text(
                     device.id.toString(),
                     style: const TextStyle(
                       color: darkSlateGray,
+                      fontStyle: FontStyle.italic,
                     )
                   )
                 ],
               ),
               ElevatedButton(
                 child: const Text('Connect', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  backgroundColor: cambridgeBlue,
+                  textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold
+                  ),
+                  elevation: 3,
+                ),
                 onPressed: () async {
                   if (device.name.contains("DSD TECH")) {
                     try {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                      );
+
                       await device.connect();
                       controlButtons.addAll([
                         ControlButton(buttonName: 'LEFT', onTap: () => writeValue("0"), icon: Icon(Icons.arrow_circle_left_sharp)),
                         ControlButton(buttonName: 'RIGHT', onTap: () => writeValue("1"), icon: Icon(Icons.arrow_circle_right_sharp)),
+                        ControlButton(
+                            buttonName: 'GO BACK',
+                            onTap: () async {
+                              await arduinoDevice?.disconnect();
+                              setState(() {
+                                bluetoothServices = null;
+                              });
+                            },
+                            icon: Icon(Icons.cancel)
+                        ),
                       ]);
                       List<BluetoothService> services = await device.discoverServices();
                       setState(() {
                         bluetoothServices = services;
                       });
+
+                      setState(() {
+                        arduinoDevice = device;
+                      });
+
+                      Navigator.of(context).pop();
                     } catch (e) {
                       await device.disconnect();
                     }
