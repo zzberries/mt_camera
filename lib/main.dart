@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mt_camera/bluetooth_module_controls.dart';
-import 'package:mt_camera/home_page.dart';
-import 'camera_controls.dart';
+import 'package:mt_camera/camera_apps.dart';
 import 'package:mt_camera/color_constants.dart';
 
 // run the actual app
@@ -42,11 +41,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   // the different pages based on the icons in the navbar
   static const List<Widget> _widgetOptions = <Widget>[ // the camera controls page
-    HomeScreen(),
+    CameraApps(),
     BluetoothScreen(),
-    Text(
-      'Index 2: Robot Controls',
-    ),
   ];
 
   // what happens when you select a given navbar
@@ -101,10 +97,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Bluetooth',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.open_with),
-            label: 'Mount',
           ),
         ],
         currentIndex: _selectedIndex,

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
+import 'package:mt_camera/about_us.dart';
 import 'package:mt_camera/color_constants.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class CameraApps extends StatefulWidget {
+  const CameraApps({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CameraApps> createState() => _CameraAppsState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CameraAppsState extends State<CameraApps> {
   final List<CameraAppIcon> _apps = [];
 
   @override
@@ -106,8 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
           margin: const EdgeInsets.all(5),
           padding: const EdgeInsets.all(10),
           child: Column(
-            children: const [
-              Text(
+            children: [
+              const Text(
                   'Are you using a camera our app doesn\'t support?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -115,14 +116,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: darkSlateGray,
                   )
               ),
-              Text(
-                  'Contact us.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: cambridgeBlue,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AboutUsPage()),
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                      'Contact us.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: cambridgeBlue,
+                      )
                   )
-              )
+                )
+              ),
             ],
           )
         )
