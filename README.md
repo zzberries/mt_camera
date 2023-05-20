@@ -1,6 +1,6 @@
-# mt_camera
+# Mt. Camera - A Camera Mount Controller App
 
-A new Flutter project.
+This app is designed to go along with an Arduino mount that can effectively control a camera for a wheelchair user. 
 
 ## Getting Started
 
