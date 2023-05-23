@@ -15,7 +15,10 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
   FlutterBluePlus flutterBlue = FlutterBluePlus.instance;
   List<BluetoothDevice> _devicesList = [];
   List<BluetoothService>? bluetoothServices;
-  List<ControlButton> controlButtons = [];
+  List<ControlButton> panControlButtons = [];
+  List<ControlButton> tiltControlButtons = [];
+  List<ControlButton> rollControlButtons = [];
+  ControlButton disconnectButton = ControlButton(buttonName: "Disconnect", onTap: () => print("0") , icon: const Icon(Icons.cancel, color: Colors.red));
   BluetoothDevice? arduinoDevice;
 
   @override
@@ -62,7 +65,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
             )
         ),
         Wrap(
-          children: controlButtons
+          children: panControlButtons
               .map((e) => Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
             child: IconButton(
@@ -77,6 +80,73 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
           color: darkSlateGray,
           thickness: 2.0,
         ),
+        const Text(
+            'Tilt',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+              color: darkSlateGray,
+            )
+        ),
+        Wrap(
+          children: tiltControlButtons
+              .map((e) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+            child: IconButton(
+              onPressed: e.onTap,
+              icon: e.icon,
+              iconSize: 72,
+            ),
+          ))
+              .toList(),
+        ),
+        const Divider(
+          color: darkSlateGray,
+          thickness: 2.0,
+        ),
+        const Text(
+            'Roll',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+              color: darkSlateGray,
+            )
+        ),
+        Wrap(
+          children: rollControlButtons
+              .map((e) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+            child: IconButton(
+              onPressed: e.onTap,
+              icon: e.icon,
+              iconSize: 72,
+            ),
+          ))
+              .toList(),
+        ),
+        const Divider(
+          color: darkSlateGray,
+          thickness: 2.0,
+        ),
+        const Text(
+            'Disconnect',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+              color: darkSlateGray,
+            )
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          child: IconButton(
+            onPressed: disconnectButton.onTap,
+            icon: disconnectButton.icon,
+            iconSize: 72,
+          )
+        )
       ],
     );
   }
@@ -176,26 +246,40 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                       );
 
                       await device.connect();
-                      controlButtons.addAll([
+                      panControlButtons.addAll([
                         ControlButton(buttonName: 'LEFT', onTap: () => writeValue("0"), icon: Icon(Icons.arrow_circle_left_sharp)),
                         ControlButton(buttonName: 'RIGHT', onTap: () => writeValue("1"), icon: Icon(Icons.arrow_circle_right_sharp)),
-                        ControlButton(
+                      ]);
+
+                      tiltControlButtons.addAll([
+                        ControlButton(buttonName: 'LEFT', onTap: () => writeValue("2"), icon: Icon(Icons.arrow_circle_left_sharp)),
+                        ControlButton(buttonName: 'RIGHT', onTap: () => writeValue("3"), icon: Icon(Icons.arrow_circle_right_sharp)),
+                      ]);
+
+                      rollControlButtons.addAll([
+                        ControlButton(buttonName: 'LEFT', onTap: () => writeValue("4"), icon: Icon(Icons.arrow_circle_left_sharp)),
+                        ControlButton(buttonName: 'RIGHT', onTap: () => writeValue("5"), icon: Icon(Icons.arrow_circle_right_sharp)),
+                      ]);
+
+                      List<BluetoothService> services = await device.discoverServices();
+                      setState(() {
+                        bluetoothServices = services;
+                        disconnectButton = ControlButton(
                             buttonName: 'GO BACK',
                             onTap: () async {
                               await arduinoDevice?.disconnect();
                               setState(() {
                                 bluetoothServices = null;
+                                panControlButtons = [];
+                                tiltControlButtons = [];
+                                rollControlButtons = [];
                               });
                             },
-                            icon: Icon(Icons.cancel)
-                        ),
-                      ]);
-                      List<BluetoothService> services = await device.discoverServices();
-                      setState(() {
-                        bluetoothServices = services;
-                      });
-
-                      setState(() {
+                            icon: const Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                            )
+                        );
                         arduinoDevice = device;
                       });
 
